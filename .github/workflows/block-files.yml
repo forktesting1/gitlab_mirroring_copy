@@ -1,0 +1,26 @@
+name: Block Files
+
+on:
+  push:
+    branches:
+      - "**"  # Runs on any branch push
+  pull_request:
+    branches:
+      - "**"  # Runs on any pull request
+
+jobs:
+  check-exe-files:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Check for .exe files
+        run: |
+          if git ls-files '*.exe' | grep '.exe'; then
+            echo "Error: .exe files are not allowed."
+            exit 1
+          else
+            echo "No .exe files found."
+          fi
